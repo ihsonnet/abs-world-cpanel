@@ -51,7 +51,7 @@
                             <v-card color="teal lighten-5" outlined class="mt-2 pa-4" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                 <v-row>
                                    <v-col cols="3">
-                                       <v-img sizes="10" class="ma-5 mx-15" style="width:150px;border:1px solid gray;border-radius:100px!important" src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+                                       <v-img sizes="10" class="ma-5 mx-15" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://www.cdc.gov/drugoverdose/training/modules/module1/images/welcomeimage.png"></v-img>
                                    </v-col>
                                    <v-col cols="4">
                                        <h2 class="ma-4"><b>Dr. {{ userInfo.firstName }} {{ userInfo.lastname }}</b></h2>
@@ -168,8 +168,8 @@ export default {
             user: {},
             auth: "Bearer " + localStorage.getItem("token"),
             userInfo: {
-                firstName:"Sandra",
-                lastname:"Adams",
+                firstName:"Tasnim",
+                lastname:"Jara",
                 institute:"Dhaka Medical College",
                 degree: "MBBS",
                 phone:"01734543027",

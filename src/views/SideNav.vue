@@ -8,11 +8,11 @@
         <v-list>
           <v-list-item class="px-2" link>
             <v-list-item-avatar>
-              <v-img src="https://randomuser.me/api/portraits/women/85.jpg"></v-img>
+              <v-img src="https://www.cdc.gov/drugoverdose/training/modules/module1/images/welcomeimage.png"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h6">
-                Dr. Sandra Adams
+                Dr. Tasnim Jara
               </v-list-item-title>
               <v-list-item-subtitle>MBBS, Dhaka Medical College</v-list-item-subtitle>
             </v-list-item-content>
