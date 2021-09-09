@@ -25,6 +25,12 @@
           nav
           dense
         >
+          <v-list-item link to="/">
+            <v-list-item-icon>
+              <v-icon>mdi-creation</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Dashboard</v-list-item-title>
+          </v-list-item>
           <v-list-item link to="/rx-prescription">
             <v-list-item-icon>
               <v-icon>mdi-prescription</v-icon>
@@ -48,6 +54,12 @@
               <v-icon>mdi-pill</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Generic Contoller</v-list-item-title>
+          </v-list-item>
+          <v-list-item link to="settings">
+            <v-list-item-icon>
+              <v-icon>mdi-shape-circle-plus</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Settings</v-list-item-title>
           </v-list-item>
         </v-list>
     </v-navigation-drawer>
