@@ -1,26 +1,20 @@
 <template>
   <v-app>
-    <v-app-bar
+  <v-app-bar
+      elevation="0"
       app
-      color="primary"
+      height="73px"
+      style="border-bottom:1px solid #e7e7e7 !important"
+      color="white"
       dark
     >
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
           alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
+          class="shrink mt-1 mr-2"
           contain
           min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          src="./assets/hero-logo.png"
           width="100"
         />
       </div>
@@ -28,28 +22,31 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
+        color="primary"
+        to="rx-prescription"
         text
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <v-icon>mdi-prescription</v-icon>
+        <span class="mr-2">New Prescription</span>
       </v-btn>
     </v-app-bar>
-
+    <side-nav></side-nav>
     <v-main>
-      <router-view/>
+     <router-view/>
     </v-main>
-  </v-app>
+</v-app>
 </template>
 
 <script>
-
+import SideNav from './views/SideNav.vue'
 export default {
   name: 'App',
-
-  data: () => ({
-    //
-  }),
-};
+  components: {
+    'side-nav': SideNav
+  },
+  data () {
+    return {
+    }
+  }
+}
 </script>
