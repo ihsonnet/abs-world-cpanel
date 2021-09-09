@@ -21,6 +21,7 @@
     "start_url":"/",
     "background_color": "#63B884",
     "display":"standalone",
+    "display_override": ["window-controls-overlay"],
     "theme_color": "#63B884",
     "scope":"/",
     "offline_enabled": true
