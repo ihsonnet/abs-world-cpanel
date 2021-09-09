@@ -284,6 +284,7 @@ export default {
           this.getGenericInfo()
         })
         .catch(r => {
+          console.log(r)
           this.successMsg = false
           this.errorMsg = true
         })
