@@ -1,4 +1,12 @@
 <template>
+<div>
+  <v-card rounded="0" elevation="0" color="#f2f5f8"> 
+      <v-breadcrumbs :items="items">
+      <template v-slot:divider>
+          <v-icon>mdi-chevron-right</v-icon>
+      </template>
+      </v-breadcrumbs>
+  </v-card>
   <v-container>
     <div style="position: fixed;z-index:1;right:20px">
     <v-alert v-if="successMsg" text type="success">
@@ -20,7 +28,7 @@
         <v-col>
         <v-autocomplete
           v-model="model"
-          :items="items"
+          :items="drugs"
           :loading="isLoading"
           :search-input.sync="search"
           chips
@@ -197,6 +205,7 @@
       </v-row>
     </v-card>
   </v-container>
+</div>
 </template>
 <script>
 import axios from 'axios'
@@ -207,7 +216,7 @@ export default {
     isLoading2: false,
     successMsg: false,
     errorMsg: false,
-    items: [],
+    drugs: [],
     model: null,
     search: null,
     tab: null,
@@ -229,7 +238,19 @@ export default {
       pregnancyCategoryNote: '',
       renalDose: '',
       sideEffect: ''
-    }
+    },
+     items: [
+            {
+            text: 'a2sDMS',
+            disabled: false,
+            href: '/',
+            },
+            {
+            text: 'Generic Controller',
+            disabled: true,
+            href: 'generic-controller',
+            },
+        ],
   }),
   methods: {
     getGeneticList () {
@@ -238,7 +259,7 @@ export default {
         url: `${this.GET_GENERIC_API}?genericName=${this.search}&pageNo=0&pageSize=50`
       })
         .then((r) => {
-          this.items = r.data
+          this.drugs = r.data
           console.log('Data')
           console.log(r.data)
         })

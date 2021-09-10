@@ -1,7 +1,13 @@
 <template>
+<div>
+    <v-card rounded="0" elevation="0" color="#f2f5f8"> 
+            <v-breadcrumbs :items="items">
+            <template v-slot:divider>
+                <v-icon>mdi-chevron-right</v-icon>
+            </template>
+            </v-breadcrumbs>
+        </v-card>
     <v-container>
-
-        <div>
 
         <!-- appointment list  -->
                    <v-row>
@@ -76,11 +82,10 @@
             
             <v-btn depressed color="info"><v-icon class="mr-2" @click="AppDetailsDialog = false">mdi-content-save</v-icon> Save Drug</v-btn>
         </v-card>
-    </v-dialog>
-
-    </div>         
+    </v-dialog>        
             
     </v-container>
+</div> 
 </template>
 
 <script>
