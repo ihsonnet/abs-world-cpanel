@@ -202,6 +202,7 @@
 import axios from 'axios'
 export default {
   data: () => ({
+    valid: true,
     isLoading: false,
     isLoading2: false,
     successMsg: false,

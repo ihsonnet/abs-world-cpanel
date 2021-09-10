@@ -85,8 +85,8 @@
                             </v-card>
                         </v-col>
                    </v-row>
+                   
                    <!-- appointment list  -->
-                                    <!-- member list  -->
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
