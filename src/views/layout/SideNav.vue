@@ -55,15 +55,74 @@
             </v-list-item-icon>
             <v-list-item-title>Generic Contoller</v-list-item-title>
           </v-list-item>
+          
+          <v-list-item link to="edit-template">
+            <v-list-item-icon>
+              <v-icon>mdi-cards-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Edit Template</v-list-item-title>
+          </v-list-item>
           <v-list-item link to="settings">
             <v-list-item-icon>
-              <v-icon>mdi-shape-circle-plus</v-icon>
+              <v-icon>mdi-power-settings</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item>
+          <v-list-item link to="about">
+            <v-list-item-icon>
+              <v-icon>mdi-information-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>About</v-list-item-title>
+          </v-list-item>
         </v-list>
+
+        <!-- nav footer -->
+        
+        <v-footer class="pa-0" style="display: inline-block" fixed>
+          <v-list nav dense>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon :color="setOnlineStatus() ? 'green' : 'red'">{{ setOnlineStatus() ? 'mdi-checkbox-blank-circle' : 'mdi-checkbox-blank-circle-outline'}}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ onlineStatus }}</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item link to="/auth/signin">
+              <v-list-item-icon>
+                <v-icon>mdi-exit-to-app</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>Log Out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+        </v-footer>
     </v-navigation-drawer>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      onlineStatus: "Offline",
+    }
+  },
+  methods: {
+    setOnlineStatus() {
+      if(window.navigator.onLine){
+        this.onlineStatus="Online";
+        return true;
+      }
+      else
+      {
+        this.onlineStatus="Offline";
+        return false;
+      }
+    }
+  },
+  mounted() {
+    this.setOnlineStatus()
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .v-list-item__title {
   font-size: 15px !important;
