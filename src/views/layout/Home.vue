@@ -34,15 +34,18 @@
     <v-main>
      <router-view/>
     </v-main>
+    <update-btn></update-btn>
 </v-app>
 </template>
 
 <script>
 import SideNav from '../layout/SideNav.vue'
+import UpdateBtn from '../layout/UpdateBtn.vue'
 export default {
   name: 'App',
   components: {
-    'side-nav': SideNav
+    'side-nav': SideNav,
+    'update-btn': UpdateBtn
   },
   data () {
     return {
@@ -50,3 +53,4 @@ export default {
   }
 }
 </script>
+
