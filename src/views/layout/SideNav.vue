@@ -8,13 +8,13 @@
         <v-list>
           <v-list-item class="px-2" link>
             <v-list-item-avatar>
-              <v-img src="https://www.cdc.gov/drugoverdose/training/modules/module1/images/welcomeimage.png"></v-img>
+              <v-img src="https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMZ0_400x400.jpg"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h6">
-                Dr. Tasnim Jara
+                MD Sajib Hang
               </v-list-item-title>
-              <v-list-item-subtitle>MBBS, Dhaka Medical College</v-list-item-subtitle>
+              <v-list-item-subtitle>ADMIN</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list>
@@ -31,68 +31,57 @@
             </v-list-item-icon>
             <v-list-item-title>Dashboard</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="/rx-prescription">
+          <v-list-item link to="products">
             <v-list-item-icon>
-              <v-icon>mdi-prescription</v-icon>
+              <v-icon>mdi-shopping-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Create Presciption</v-list-item-title>
+            <v-list-item-title>Product Controller</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="/create-appointment">
+          <v-list-item link to="categories">
             <v-list-item-icon>
-              <v-icon>mdi-clipboard-plus</v-icon>
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Create Appointment</v-list-item-title>
+            <v-list-item-title>Category Controller</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="appointment-list">
+          <v-list-item link to="orders">
             <v-list-item-icon>
-              <v-icon>mdi-clipboard-text</v-icon>
+              <v-icon>mdi-cart-outline</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Appointment List</v-list-item-title>
+            <v-list-item-title>Orders</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="generic-controller">
+          <v-list-item link to="users">
             <v-list-item-icon>
-              <v-icon>mdi-pill</v-icon>
+              <v-icon>mdi-account-check</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Generic Contoller</v-list-item-title>
+            <v-list-item-title>Users</v-list-item-title>
           </v-list-item>
           
-          <v-list-item link to="edit-template">
-            <v-list-item-icon>
-              <v-icon>mdi-cards-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Edit Template</v-list-item-title>
-          </v-list-item>
           <v-list-item link to="settings">
             <v-list-item-icon>
               <v-icon>mdi-power-settings</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item>
-          <v-list-item link to="about">
-            <v-list-item-icon>
-              <v-icon>mdi-information-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>About</v-list-item-title>
-          </v-list-item>
+        
         </v-list>
 
         <!-- nav footer -->
         
         <v-footer class="pa-0" style="display: inline-block" fixed>
           <v-list nav dense>
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon :color="setOnlineStatus() ? 'green' : 'red'">{{ setOnlineStatus() ? 'mdi-checkbox-blank-circle' : 'mdi-checkbox-blank-circle-outline'}}</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ onlineStatus }}</v-list-item-title>
-            </v-list-item>
 
-            <v-list-item link to="/auth/signin">
-              <v-list-item-icon>
-                <v-icon>mdi-exit-to-app</v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>Log Out</v-list-item-title>
+          <v-list-item link to="support">
+            <v-list-item-icon>
+              <v-icon>mdi-face-agent</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Support</v-list-item-title>
           </v-list-item>
+           <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-copyright</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>ABS World Xpress</v-list-item-title>
+            </v-list-item>
         </v-list>
         </v-footer>
     </v-navigation-drawer>

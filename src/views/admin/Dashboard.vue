@@ -20,24 +20,29 @@
         <v-row>
             <v-col lg="3" md="3" sm="12" cols="12">
                 <v-card  flat  class="ma-5" elevation="0">
-                    <h4>Dashboard</h4>
-                    <br>
-                    <v-row v-for="item in userInfo.dashboard" :key="item.text">
+                   <v-row>
                         <v-col>
-                           <v-card elevation="0" class="my-2" :color="getRandomColor()" link :to="'project/'+item.id">
-                               <v-row>
-                                   <v-col cols="3">
-                                       <v-icon class="mx-5 my-7" x-large>{{item.icon}}</v-icon>
+                            <v-card color="blue lighten-4" outlined class="mt-2 pa-4" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
+                                <v-row>
+                                   <v-col style="text-align:center !important" align-self="center" cols="12">
+                                       <v-img sizes="10" class="ma-5 mx-15" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMZ0_400x400.jpg"></v-img>
+                                        <v-chip color="blue" class="white--text" small link><b>{{userInfo.username}}</b></v-chip> <br>
                                    </v-col>
-                                   <v-col cols="9">
-                                       <strong style="font-size:12;color:gray">{{item.text}}</strong> 
-                                       <br>
-                                       <h1 class="mt-4">{{item.count}}</h1>
+                                   <v-col cols="12">
+                                       <h2 class="ma-4"><b>{{ userInfo.firstName }} {{ userInfo.lastname }}</b></h2>
+                                        <v-chip small outlined class="ml-4">{{userInfo.role}}</v-chip> <br>
+                                        <v-card-subtitle>
+                                                    <b>Email:</b> <br>{{userInfo.email}} <br>
+                            
+                                                    <b>Phone Number:</b> <br>{{userInfo.phone}} <br>
+                                 
+                                                    <b>Address:</b> <br> {{userInfo.address}} <br>
+                                        </v-card-subtitle>
                                    </v-col>
-                               </v-row>
-                           </v-card>
+                                </v-row>
+                            </v-card>
                         </v-col>
-                    </v-row>
+                   </v-row>
                 </v-card>
             </v-col>
             <v-divider
@@ -46,65 +51,48 @@
             ></v-divider>
             <v-col lg="" md="9" sm="12" cols="12">
                 <v-card  class="ma-5" elevation="0">
-                   <v-row>
-                        <v-col>
-                            <v-card color="teal lighten-5" outlined class="mt-2 pa-4" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
-                                <v-row>
-                                   <v-col cols="3">
-                                       <v-img sizes="10" class="ma-5 mx-15" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://www.cdc.gov/drugoverdose/training/modules/module1/images/welcomeimage.png"></v-img>
-                                   </v-col>
+
+                    <!-- dashboard -->
+
+                     <h4>Dashboard</h4>
+                    <br>
+                    <v-row>
+                        <v-col v-for="item in userInfo.dashboard" :key="item.text">
+                           <v-card elevation="0" class="my-2" :color="getRandomColor()" link :to="'project/'+item.id">
+                               <v-row>
                                    <v-col cols="4">
-                                       <h2 class="ma-4"><b>Dr. {{ userInfo.firstName }} {{ userInfo.lastname }}</b></h2>
-                                        <v-chip small outlined class="ml-4">{{userInfo.degree}} , {{userInfo.institute}}</v-chip>
+                                       <v-icon class="mx-5 my-7" x-large>{{item.icon}}</v-icon>
                                    </v-col>
-                                   <v-col>
-                                       <v-row>
-                                            <v-col>
-                                                <v-card-subtitle>
-                                                    <b>Email:</b> <br>{{userInfo.email}}
-                                                </v-card-subtitle>
-                                            </v-col>
-                                            <v-col align-self="center">
-                                                <v-chip color="teal" class="white--text" small link><b>{{userInfo.role}}</b></v-chip>
-                                            </v-col>
-                                       </v-row>
-                                       <v-row>
-                                            <v-col>
-                                                <v-card-subtitle>
-                                                    <b>Phone Number:</b> <br>{{userInfo.phone}}
-                                                </v-card-subtitle>
-                                            </v-col>
-                                            <v-col>
-                                                <v-card-subtitle>
-                                                    <b>Address:</b> <br> {{userInfo.address}}
-                                                </v-card-subtitle>
-                                            </v-col>
-                                       </v-row>
+                                   <v-col cols="8">
+                                       <strong style="font-size:12;color:gray">{{item.text}}</strong> 
+                                       <br>
+                                       <h1 class="mt-4">{{item.count}}</h1>
                                    </v-col>
-                                </v-row>
-                            </v-card>
+                               </v-row>
+                           </v-card>
                         </v-col>
-                   </v-row>
+                    </v-row>
+                   
                    
                    <!-- appointment list  -->
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-clipboard-text</v-icon> <h3 class="mt-1 ml-2">Recent Appointment</h3>
+                                   <v-icon large>mdi-clipboard-text</v-icon> <h3 class="mt-1 ml-2">Latest Orders</h3>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="4">
-                                       <b>Name</b>
-                                   </v-col>
-                                   <v-col>
-                                       <b>Age</b>
+                                       <b>Order ID</b>
                                    </v-col>
                                    <v-col>
                                        <b>Phone Number</b>
                                    </v-col>
                                    <v-col>
                                        <b>Address</b>
+                                   </v-col>
+                                   <v-col>
+                                       <b>Amount</b>
                                    </v-col>
                                    <v-col>
                                        <b>Action</b>
@@ -122,14 +110,12 @@
                                                 ><h3>{{appointment.firstName.charAt(0)}}</h3></v-avatar>
                                             </v-col>
                                             <v-col>
-                                                 <h4 class="mt-5">
-                                                    {{appointment.firstName}} {{appointment.lastName}}
+                                                 <h4 class="mt-3">
+                                                    #Order0234
                                                 </h4>   
+                                                <small>By {{appointment.firstName}} {{appointment.lastName}}</small>
                                             </v-col>
                                         </v-row>
-                                    </v-col>
-                                    <v-col>
-                                        <v-chip class="mt-3" small outlined color="teal">{{appointment.age}}</v-chip>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
@@ -139,6 +125,11 @@
                                     <v-col>
                                         <v-card-subtitle>
                                             {{appointment.address}}
+                                        </v-card-subtitle>
+                                    </v-col>
+                                    <v-col>
+                                        <v-card-subtitle>
+                                            BDT {{appointment.age}}000
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
@@ -168,32 +159,31 @@ export default {
             user: {},
             auth: "Bearer " + localStorage.getItem("token"),
             userInfo: {
-                firstName:"Tasnim",
-                lastname:"Jara",
-                institute:"Dhaka Medical College",
-                degree: "MBBS",
+                firstName:"MD Sajib",
+                lastname:"Hang",
                 phone:"01734543027",
+                username:"sajibhang@17",
                 email:"sandra.dr@gmail.com",
-                role:"Doctor",
+                role:"ADMIN",
                 address: "Dhaka, Bangladesh",
                 dashboard: [
                 {
-                    text: "Todays Appointment",
+                    text: "Todays Order",
                     count: 80,
                     icon: "mdi-playlist-minus"
                 },
                 {
-                    text: "Todays Earn",
+                    text: "Todays Sales",
                     count: 800,
                     icon: "mdi-cash"
                 },
                 {
-                    text: "Total Appointment",
+                    text: "Total Product",
                     count: 320,
                     icon: "mdi-playlist-check"
                 },
                 {
-                    text: "Total Earn",
+                    text: "Total Sales",
                     count: 34000,
                     icon: "mdi-cash-multiple"
                 },
@@ -219,7 +209,7 @@ export default {
             ],
             items: [
                 {
-                text: 'a2sDMS',
+                text: 'Home',
                 disabled: false,
                 href: '/',
                 },

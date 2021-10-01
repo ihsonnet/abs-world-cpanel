@@ -8,17 +8,17 @@
       large
       bottom
       right
-      color="teal"
+      color="info"
       elevation="2"
       v-bind="attrs"
       v-on="on"
     >
       <v-icon dark>
-        mdi-cloud-upload
+        mdi-chat-processing-outline
       </v-icon>
     </v-btn>
     </template>
-    <span>Update From Server</span>
+    <span>Customer Support</span>
     </v-tooltip>
 </template>
 <style scoped>

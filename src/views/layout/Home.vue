@@ -14,8 +14,8 @@
           class="shrink mt-1 mr-2"
           contain
           min-width="100"
-          src="../../assets/hero-logo.png"
-          width="100"
+          src="../../assets/logo.gif"
+          width="200"
         />
       </div>
 
@@ -23,11 +23,11 @@
 
       <v-btn
         color="primary"
-        to="rx-prescription"
-        text
+        link to="/auth/signin"
+        outlined
       >
-        <v-icon>mdi-prescription</v-icon>
-        <span class="mr-2">New Prescription</span>
+        <v-icon>mdi-exit-to-app</v-icon>
+        <span class="mr-2">Log Out</span>
       </v-btn>
     </v-app-bar>
     <side-nav></side-nav>

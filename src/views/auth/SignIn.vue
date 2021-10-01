@@ -21,10 +21,10 @@
                 top
                 color="#AD74B8"
             ></v-progress-linear>
+            <br>
                 <div align="center">
-                    <v-img max-width='200' min-width="170" height='80' src="@/assets/hero-logo.png"></v-img>
-                    <br>
-                    <h3 class="my-4">Sign in to Buggie</h3>
+                    <v-img width='250' height='50' src="@/assets/logo.gif"></v-img><br><br>
+                    <h3 class="my-4">Sign in to ABS World Xpress</h3>
                 </div>
               <v-form style="margin-top:20px" ref="form" lazy-validation class="">
                     <v-text-field dense
@@ -55,18 +55,9 @@
                     <br/> -->
                     <br>
                     <v-row class="mt-8">
-                        <v-col>
-                          <v-btn
-                            class="mt-4 mx-0"
-                            elevation="0"
-                            to="signup"
-                            >
-                            Create An Account
-                            </v-btn>
-                        </v-col>
                             <!-- <v-btn style="color:#666;text-decoration: none;margin-left:2.5%" href="#/auth/signup">Create An Account</v-btn> -->
                                     <v-col  style="text-align:center" class="pb-0 pt-0">
-                        <v-btn color="#BB79B8" @click="submit">Sign In</v-btn>
+                        <v-btn depressed color="#479EF4" style="color:white !important;" @click="push">Sign In</v-btn>
                     </v-col>
                 </v-row>
                 </v-form>
@@ -74,7 +65,7 @@
             </v-col>
             </v-row>
             <v-footer fixed>
-                <p style="text-align:center;margin:auto; !important">Copyright © Buggie | 2021</p> 
+                <p style="text-align:center;margin:auto; !important">Copyright © ABS World Xpress | 2021</p> 
             </v-footer>
         </v-container>
 </template>
@@ -110,6 +101,9 @@ export default {
       
   },
   methods: {
+    push(){
+      this.$router.push("/");
+    },
     submit(){
       let r =  this.$refs.form.validate();
       if(r == true){

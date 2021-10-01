@@ -9,25 +9,26 @@
         </v-card>
     <v-container>
 
-        <!-- appointment list  -->
+        <!-- order list  -->
+
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-clipboard-check</v-icon> <h3 class="mt-1 ml-2">Appointment List</h3> 
+                                   <v-icon large>mdi-clipboard-text</v-icon> <h3 class="mt-1 ml-2">Order List</h3>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="4">
-                                       <b>Name</b>
-                                   </v-col>
-                                   <v-col>
-                                       <b>Age</b>
+                                       <b>Order ID</b>
                                    </v-col>
                                    <v-col>
                                        <b>Phone Number</b>
                                    </v-col>
                                    <v-col>
                                        <b>Address</b>
+                                   </v-col>
+                                   <v-col>
+                                       <b>Amount</b>
                                    </v-col>
                                    <v-col>
                                        <b>Action</b>
@@ -45,14 +46,12 @@
                                                 ><h3>{{appointment.firstName.charAt(0)}}</h3></v-avatar>
                                             </v-col>
                                             <v-col>
-                                                 <h4 class="mt-5">
-                                                    {{appointment.firstName}} {{appointment.lastName}}
+                                                 <h4 class="mt-3">
+                                                    #Order0234
                                                 </h4>   
+                                                <small>By {{appointment.firstName}} {{appointment.lastName}}</small>
                                             </v-col>
                                         </v-row>
-                                    </v-col>
-                                    <v-col>
-                                        <v-chip class="mt-3" small outlined color="teal">{{appointment.age}}</v-chip>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
@@ -66,13 +65,18 @@
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                                <v-btn color="info" depressed small><v-icon small>mdi-prescription</v-icon></v-btn>
+                                            BDT {{appointment.age}}000
+                                        </v-card-subtitle>
+                                    </v-col>
+                                    <v-col>
+                                        <v-card-subtitle>
+                                                <v-btn color="info" depressed small><v-icon small>mdi-pencil</v-icon></v-btn>
                                         </v-card-subtitle>
                                     </v-col>
                                </v-row>
                            </v-card>
                        </v-col>
-                   </v-row>   
+                   </v-row>            
 
                    <!-- dialog here -->
 
@@ -118,9 +122,9 @@ export default {
             href: '/',
             },
             {
-            text: 'Appointment List',
+            text: 'Orders',
             disabled: true,
-            href: 'appointment-list',
+            href: 'orders',
             },
         ],
     }
