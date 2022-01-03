@@ -81,11 +81,89 @@
 
                    <!-- dialog here -->
 
-    <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="800px">
+    <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="900px">
         <v-card class="pa-5">
-            <h3>Add New Drug</h3>
+            <h3>Add New Product</h3> <br>
+            <v-row>
+                <v-col>
+                    <v-select
+                        v-model="createProductModel.categoryId"
+                        label="Select Category"
+                        :items="categoryList"
+                        item-text="catName"
+                        item-value="catId"
+                        required
+                        outlined
+                        dense
+                    ></v-select>
+                    <v-text-field
+                        v-model="createProductModel.productName"
+                        label="Product Name"
+                        required
+                        outlined
+                        dense
+                    ></v-text-field>
+                    <v-textarea
+                        v-model="createProductModel.productDescription"
+                        label="Product Description"
+                        required
+                        outlined
+                        dense
+                    ></v-textarea>
+                </v-col>
+                <v-col>
+                    <v-row>
+                        <v-col cols="8">
+                            <v-file-input
+                                accept="image/*"
+                                label="Upload Product Image"
+                                v-model="productImageLink"
+                            ></v-file-input>
+                        </v-col>
+                        <v-col>
+                            <v-img
+                            height="80"
+                            width="80"
+                            style="border:1px solid gray"
+                            :src="'@'+productImageLink"
+                            >
+
+                            </v-img>
+                        </v-col>
+                    </v-row>
+                    <br>
+                    <v-text-field
+                        v-model="createProductModel.buyingPrice"
+                        label="Buying Price"
+                        required
+                        outlined
+                        dense
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="createProductModel.regularPrice"
+                        label="Regular Selling Price"
+                        required
+                        outlined
+                        dense
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="createProductModel.cashBack"
+                        label="CashBack / Price Cut"
+                        required
+                        outlined
+                        dense
+                    ></v-text-field>
+                    <v-text-field
+                        v-model="createProductModel.stockAvailable"
+                        label="Initial Sock"
+                        required
+                        outlined
+                        dense
+                    ></v-text-field>
+                </v-col>
+            </v-row>
             
-            <v-btn depressed color="info"><v-icon class="mr-2" @click="createAppDialog = false">mdi-content-save</v-icon> Save Drug</v-btn>
+            <v-btn @click="save" depressed color="info"><v-icon class="mr-2">mdi-content-save</v-icon> Save Product</v-btn>
         </v-card>
     </v-dialog>
             
@@ -99,8 +177,26 @@ export default {
   data () {
     return {
         PRODUCT_API:"https://abs-world-xpress.herokuapp.com/api/product/",
+        CATEGORY_API: "https://abs-world-xpress.herokuapp.com/api/category/",
+        auth: "Bearer " + localStorage.getItem("token"),
         createAppDialog: false,
+        isEdit: false,
+        successBar: false,
+        errorBar: false,
+        message: "No Messsage",
         productList: [],
+        categoryList: [],
+        createProductModel: {
+            buyingPrice: 0,
+            cashBack: 0,
+            categoryId: "",
+            currentPrice: 0,
+            productDescription: "",
+            productName: "",
+            regularPrice: 0,
+            stockAvailable: 0
+        },
+        productImageLink: "",
         items: [
             {
             text: 'a2sDMS',
@@ -138,10 +234,59 @@ export default {
         .catch(r => {
             console.log(r)
         });
-    }
+    },
+    getCategoryList(){
+        axios({
+            method: "get",
+            url: this.CATEGORY_API,
+        })
+        .then(r => {
+            this.categoryList = r.data.data;
+                })
+        .catch(r => {
+            console.log(r)
+        });
+    },
+    save(){
+        this.createProductModel.currentPrice = this.createProductModel.regularPrice - this.createProductModel.cashBack;
+        if(this.isEdit){
+            this.editProduct();
+        }
+        else{
+            this.addNewProduct();
+        }
+    },
+    addNewProduct(){
+        axios({
+            method:"POST",
+            url: this.PRODUCT_API,
+            data: this.createProductModel,
+            headers: {
+                Authorization: this.auth,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==201){
+                // this.uploadCatImage(r.data.data.catId);
+                this.message = "Product Added!"
+                this.successBar = true;
+                this.createCatDialog = false
+                this.getProductList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        });
+    },
+    editProduct(){
+
+    },
   },
   mounted(){
       this.getProductList();
+      this.getCategoryList();
   }
 }
 </script>

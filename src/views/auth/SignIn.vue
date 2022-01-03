@@ -19,7 +19,7 @@
                 :indeterminate="dialog"
                 absolute
                 top
-                color="#AD74B8"
+                color="#479EF4"
             ></v-progress-linear>
             <br>
                 <div align="center">
@@ -29,7 +29,7 @@
               <v-form style="margin-top:20px" ref="form" lazy-validation class="">
                     <v-text-field dense
                         v-model="email"
-                        label="E-mail"
+                        label="Username / Email"
                         type="email"
                         :rules="[rules.required,rules.email]"
                         required
@@ -57,7 +57,7 @@
                     <v-row class="mt-8">
                             <!-- <v-btn style="color:#666;text-decoration: none;margin-left:2.5%" href="#/auth/signup">Create An Account</v-btn> -->
                                     <v-col  style="text-align:center" class="pb-0 pt-0">
-                        <v-btn depressed color="#479EF4" style="color:white !important;" @click="push">Sign In</v-btn>
+                        <v-btn depressed color="#479EF4" style="color:white !important;" @click="submit">Sign In</v-btn>
                     </v-col>
                 </v-row>
                 </v-form>
@@ -72,7 +72,7 @@
 
 <script>
 import axios from 'axios';
-const API_URL = 'https://buggie-backend.herokuapp.com/'
+const API_URL = 'https://abs-world-xpress.herokuapp.com/'
 const LOGIN_URL = API_URL + 'auth/signin/'
 export default {
     data() {
@@ -90,10 +90,10 @@ export default {
           required: value => !!value || 'Required.',
           min: v => v.length >= 8 || 'Min 8 characters',
           emailMatch: () => ('The email and password you entered don\'t match'),
-          email: value => {
-                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                    return pattern.test(value) || 'Invalid e-mail.'
-                },
+          // email: value => {
+          //           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          //           return pattern.test(value) || 'Invalid e-mail.'
+          //       },
         }
     }
   },
@@ -110,7 +110,7 @@ export default {
       let i = this;
         this.dialog = true;
        let signInData = {
-         email: this.email,
+         username: this.email,
          password: this.password
        }
         // setTimeout(() => {   

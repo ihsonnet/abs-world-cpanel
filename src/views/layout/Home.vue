@@ -23,7 +23,7 @@
 
       <v-btn
         color="primary"
-        link to="/auth/signin"
+        @click="logOut"
         outlined
       >
         <v-icon>mdi-exit-to-app</v-icon>
@@ -49,6 +49,17 @@ export default {
   },
   data () {
     return {
+    }
+  },
+  methods: {
+    logOut(){
+      localStorage.removeItem("token");
+      this.$router.push("/auth/signin");
+    }
+  },
+  mounted(){
+    if(localStorage.token == undefined){
+      this.$router.push("/auth/signin");
     }
   }
 }

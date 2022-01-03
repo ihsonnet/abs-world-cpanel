@@ -24,8 +24,9 @@
                         <v-col>
                             <v-card color="blue lighten-4" outlined class="mt-2 pa-4" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                 <v-row>
-                                   <v-col style="text-align:center !important" align-self="center" cols="12">
-                                       <v-img sizes="10" class="ma-5 mx-15" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMZ0_400x400.jpg"></v-img>
+                                   <v-col class="mx-auto" style="text-align:center !important" align-self="center" cols="12">
+                                       <v-img sizes="10" class="mx-auto" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMZ0_400x400.jpg"></v-img>
+                                        <br>
                                         <v-chip color="blue" class="white--text" small link><b>{{userInfo.username}}</b></v-chip> <br>
                                    </v-col>
                                    <v-col cols="12">
@@ -74,7 +75,7 @@
                     </v-row>
                    
                    
-                   <!-- appointment list  -->
+                   <!-- order list  -->
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">

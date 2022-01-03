@@ -8,13 +8,32 @@
             </v-breadcrumbs>
         </v-card>
     <v-container>
-
-        <!-- appointment list  -->
+        <v-snackbar
+        timeout="2000"
+        :value="successBar"
+        absolute
+        top
+        right
+        color="success accent-4"
+        >
+        {{ message }}
+        </v-snackbar>
+         <v-snackbar
+        timeout="2000"
+        :value="errorBar"
+        absolute
+        top
+        right
+        color="error accent-4"
+        >
+        {{ message }}
+        </v-snackbar>
+        <!-- category list  -->
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Categories</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true" color="info">Create Category</v-btn>
+                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Categories</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createCatDialog = true" color="info">Create Category</v-btn>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="2">
@@ -57,11 +76,45 @@
 
                    <!-- dialog here -->
 
-    <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="800px">
+    <v-dialog title="Create New Category" v-model="createCatDialog" max-width="500px">
         <v-card class="pa-5">
-            <h3>Add New Drug</h3>
-            
-            <v-btn depressed color="info"><v-icon class="mr-2" @click="createAppDialog = false">mdi-content-save</v-icon> Save Drug</v-btn>
+            <h3>Create New Category</h3>
+            <br>
+            <v-form>
+                <v-row>
+                    <v-col>
+                        <v-text-field
+                            v-model="createCatModel.catName"
+                            label="Category Name"
+                            required
+                            outlined
+                            dense
+                        ></v-text-field>
+
+                        <v-row>
+                            <v-col cols="8">
+                                <v-file-input
+                                    accept="image/*"
+                                    label="File input"
+                                    v-model="catImageLink"
+                                ></v-file-input>
+                            </v-col>
+                            <v-col>
+                                <v-img
+                                height="80"
+                                width="80"
+                                style="border:1px solid gray"
+                                :src="'@'+catImageLink"
+                                >
+
+                                </v-img>
+                            </v-col>
+                        </v-row>
+                        <br>
+                        <v-btn depressed @click="createCategory" color="info"><v-icon class="mr-2">mdi-content-save</v-icon> Create</v-btn>
+                </v-col>
+                </v-row>
+            </v-form>
         </v-card>
     </v-dialog>
             
@@ -75,8 +128,16 @@ export default {
   data () {
     return {
         CATEGORY_API: "https://abs-world-xpress.herokuapp.com/api/category/",
-        createAppDialog: false,
+        auth: "Bearer " + localStorage.getItem("token"),
+        createCatDialog: false,
+        successBar: false,
+        errorBar: false,
+        message: "No Messsage",
         categoryList: [],
+        createCatModel: {
+            catName: ""
+        },
+        catImagefile: "",
         items: [
             {
             text: 'a2sDMS',
@@ -113,7 +174,50 @@ export default {
         .catch(r => {
             console.log(r)
         });
-    }
+    },
+    createCategory(){
+        axios({
+            method:"POST",
+            url: this.CATEGORY_API,
+            data: this.createCatModel,
+            headers: {
+                Authorization: this.auth,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==201){
+                this.uploadCatImage(r.data.data.catId);
+                this.message = "Category Added!"
+                this.successBar = true;
+                this.createCatDialog = false
+                this.getCategoryList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        });
+
+    },
+    uploadCatImage(id){
+        let formData = new FormData();
+        formData.append("image", this.catImageFile);
+
+        console.log(formData)
+        axios({
+            method:"POST",
+            url: this.CATEGORY_API+'image/'+id,
+            data: formData,
+            headers: {
+                Authorization: this.auth,
+                "Content-Type": "multipart/form-data"
+            }
+        })
+        .then(r=>{
+            console.log(r);
+        });
+    },
   },
   mounted(){
       this.getCategoryList();
