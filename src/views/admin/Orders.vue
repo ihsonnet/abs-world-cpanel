@@ -34,7 +34,7 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
-                               <v-row v-for="appointment in appointmentList" :key="appointment.id" style="text-align:center;border-bottom: 1px solid #e7e7e7">
+                               <v-row v-for="order in orderList" :key="order.id" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="ml-2" style="text-align:left" cols="4">
 
                                         <v-row>
@@ -43,29 +43,29 @@
                                                class="ma-3 white--text"
                                                 :color="getRandomColor()"
                                                 size="42"
-                                                ><h3>{{appointment.firstName.charAt(0)}}</h3></v-avatar>
+                                                ><h3><v-icon>mdi-cart</v-icon></h3></v-avatar>
                                             </v-col>
                                             <v-col>
                                                  <h4 class="mt-3">
-                                                    #Order0234
+                                                    #{{order.orderSKU}}
                                                 </h4>   
-                                                <small>By {{appointment.firstName}} {{appointment.lastName}}</small>
+                                                <small>By {{order.customerName}}</small>
                                             </v-col>
                                         </v-row>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            {{appointment.phoneNo}}
+                                            {{order.customerPhoneNumber}}
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            {{appointment.address}}
+                                            {{order.deliveryAddress}}
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            BDT {{appointment.age}}000
+                                            BDT {{order.orderAmount}}
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
@@ -93,28 +93,14 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
   data () {
     return {
+        ORDER_API: "https://abs-world-xpress.herokuapp.com/api/order",
+        auth: "Bearer " + localStorage.getItem("token"),
         AppDetailsDialog: false,
-                appointmentList: [
-                {
-                    id:"1",
-                    firstName: "Injamamul Haque",
-                    lastName:"Sonet",
-                    age:"22",
-                    phoneNo: "017354635920",
-                    address:"Dhaka, Bangladesh"
-                },
-                {
-                    id:"2",
-                    firstName: "Faisul",
-                    lastName:"Islam",
-                    age:"19",
-                    phoneNo: "017354635920",
-                    address:"Dhaka, Bangladesh"
-                }
-            ],
+        orderList: [],
         items: [
             {
             text: 'a2sDMS',
@@ -133,6 +119,23 @@ export default {
     show () {
       return 0;
     },
+    getOrderList(){
+        axios({
+            method: "get",
+            url: this.ORDER_API+'?orderBy=DESC&pageNo=0&pageSize=20&sortBy=creationTime',
+            headers: {
+            Authorization: this.auth,
+            "Content-Type": "application/json"
+            }
+        })
+        .then(r => {
+            this.orderList = r.data.data.orderList;
+            console.log(this.orderList);
+        })
+        .catch(r => {
+            console.log(r)
+        });
+    },
     getRandomColor() {
         return 'rgb(' + 
             (Math.floor(Math.random()*56)+200) + ', ' +
@@ -140,6 +143,9 @@ export default {
             (Math.floor(Math.random()*56)+200) +
             ')';
         },
+  },
+   mounted(){
+      this.getOrderList();
   }
 }
 </script>
