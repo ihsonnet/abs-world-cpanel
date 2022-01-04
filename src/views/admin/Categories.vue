@@ -93,18 +93,19 @@
 
                         <v-row>
                             <v-col cols="8">
-                                <v-file-input
+                                <input
+                                    type="file"
                                     accept="image/*"
                                     label="File input"
-                                    v-model="catImageLink"
-                                ></v-file-input>
+                                    @change="selectImage"
+                                >
                             </v-col>
                             <v-col>
                                 <v-img
                                 height="80"
                                 width="80"
                                 style="border:1px solid gray"
-                                :src="'@'+catImageLink"
+                                :src="catImageLink"
                                 >
 
                                 </v-img>
@@ -137,7 +138,8 @@ export default {
         createCatModel: {
             catName: ""
         },
-        catImagefile: "",
+        catImagefile: null,
+        catImageLink: "",
         items: [
             {
             text: 'a2sDMS',
@@ -200,11 +202,18 @@ export default {
         });
 
     },
+    selectImage(event){
+        this.catImagefile = event.target.files[0];
+        console.log(this.catImagefile);
+        if (this.catImagefile) {
+            this.catImageLink = URL.createObjectURL(this.catImagefile)
+        }
+    },
     uploadCatImage(id){
         let formData = new FormData();
-        formData.append("image", this.catImageFile);
+        formData.append("image", this.catImagefile, this.catImagefile.name);
+        console.log(formData);
 
-        console.log(formData)
         axios({
             method:"POST",
             url: this.CATEGORY_API+'image/'+id,
@@ -216,6 +225,7 @@ export default {
         })
         .then(r=>{
             console.log(r);
+            this.getCategoryList();
         });
     },
   },

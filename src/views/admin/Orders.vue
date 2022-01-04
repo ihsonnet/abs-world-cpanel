@@ -97,7 +97,7 @@ import axios from "axios"
 export default {
   data () {
     return {
-        ORDER_API: "https://abs-world-xpress.herokuapp.com/api/order",
+        ORDER_API: "https://abs-world-xpress.herokuapp.com/api/order/",
         auth: "Bearer " + localStorage.getItem("token"),
         AppDetailsDialog: false,
         orderList: [],
