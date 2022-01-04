@@ -13,6 +13,7 @@
         :value="successBar"
         absolute
         top
+        sticky
         right
         color="success accent-4"
         >
@@ -33,7 +34,7 @@
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Products List</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true" color="info">Add Product</v-btn>
+                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Products List</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true, isEdit=false" color="info">Add Product</v-btn>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="1">
@@ -89,9 +90,9 @@
                                     </v-col>
                                     <v-col>
                                         <v-btn-toggle class="mt-3">
-                                                <v-btn color="info"  depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
+                                                <v-btn color="info" @click="readyForEdit(item),isEdit = true,createAppDialog=true" depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
                                                 <v-btn color="success"  depressed small><v-icon style="color:white !important" small>mdi-plus</v-icon></v-btn>
-                                                <v-btn color="red" @click="deleteItemDialog=true" depressed small><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
+                                                <v-btn color="red" @click="deleteItemDialog=true ,selectedItem=item" depressed small><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </v-col>
                                </v-row>
@@ -103,7 +104,8 @@
 
     <v-dialog title="Add New Drug" v-model="createAppDialog" max-width="900px">
         <v-card class="pa-5">
-            <h3>Add New Product</h3> <br>
+            <h3 v-if="!isEdit">Add New Product</h3>
+            <h3 v-if="isEdit">Edit Product</h3> <br>
             <v-row>
                 <v-col>
                     <v-select
@@ -176,6 +178,7 @@
                         dense
                     ></v-text-field>
                     <v-text-field
+                        v-if="!isEdit"
                         v-model="createProductModel.stockAvailable"
                         label="Initial Sock"
                         required
@@ -184,7 +187,7 @@
                     ></v-text-field>
                 </v-col>
             </v-row>
-            
+            <v-btn v-if="!isEdit" @click="createProductModel={},imageLink=''" class="mr-2" depressed color="error"><v-icon class="mr-2">mdi-reload</v-icon> Reset</v-btn>
             <v-btn @click="save" depressed color="info"><v-icon class="mr-2">mdi-content-save</v-icon> Save Product</v-btn>
         </v-card>
     </v-dialog>
@@ -197,7 +200,7 @@
                     <v-btn @click="deleteItemDialog=false" depressed color="info"><v-icon class="mr-2">mdi-cancel</v-icon> No</v-btn>
                 </v-col>
                 <v-col>
-                    <v-btn @click="deleteItem(selectedItem)" depressed color="error"><v-icon class="mr-2">mdi-check</v-icon> Yes</v-btn>
+                    <v-btn @click="deleteProduct(selectedItem)" depressed color="error"><v-icon class="mr-2">mdi-check</v-icon> Yes</v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -265,7 +268,10 @@ export default {
     getProductList(){
         axios({
             method: "get",
-            url: this.PRODUCT_API+`?orderBy=ASC&pageNo=0&pageSize=20&sortBy=creationTime`,
+            url: this.PRODUCT_API+`cpanel/?orderBy=ASC&pageNo=0&pageSize=20&sortBy=creationTime`,
+            headers: {
+                Authorization: this.auth
+            }
         })
         .then(r => {
             this.productList = r.data.data;
@@ -352,9 +358,84 @@ export default {
             this.getProductList();
         });
     },
-    editProduct(){
+    readyForEdit(item){
+        this.imageFile = null;
+        this.createProductModel.categoryId = item.categoryModel.catId;
+        this.createProductModel.productName = item.productName;
+        this.createProductModel.buyingPrice = item.buyingPrice;
+        this.createProductModel.regularPrice = item.regularPrice;
+        this.createProductModel.cashBack = item.cashBack;
+        this.createProductModel.productDescription = item.productDescription;
+        this.imageLink = item.productImage;
 
+        console.log(this.createProductModel)
+        this.selectedItem = item;
     },
+    editProduct(){
+        console.log("Edit call")
+        let productRequest = Object.fromEntries(
+            Object.entries(this.createProductModel).slice(0, 7)
+        );
+        console.log(productRequest);
+        axios({
+            method:"PUT",
+            url: this.PRODUCT_API+`cpanel/`+this.selectedItem.productId,
+            data: productRequest,
+            headers: {
+                Authorization: this.auth,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==200){
+                if(this.imageFile){
+                    this.uploadImage(this.selectedItem.productId);
+                }
+                this.message = "Product Edited!"
+                this.successBar = true;
+                this.createAppDialog = false
+                this.getProductList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        })
+        .catch(e=>{
+            this.message = e;
+            this.errorBar = true;
+        });
+    },
+    deleteProduct(item){
+        this.successBar = false;
+        this.errorBar = false;
+        console.log("called delete")
+        console.log(item)
+        axios({
+            method:"delete",
+            url: this.PRODUCT_API+`cpanel/`+item.productId,
+            headers: {
+                Authorization: this.auth
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==200){
+                this.message = "Product Deleted!"
+                this.successBar = true;
+                this.deleteItemDialog = false
+                this.getProductList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        })
+        .catch(e=>{
+            this.message = e;
+            this.deleteItemDialog = false
+            this.errorBar = true;
+        });
+    }
   },
   mounted(){
       this.getProductList();
