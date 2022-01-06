@@ -23,19 +23,19 @@
                    <v-row>
                         <v-col>
                             <v-card color="blue lighten-4" outlined class="mt-2 pa-4" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
-                                <v-row>
+                                <v-row v-if="user">
                                    <v-col class="mx-auto" style="text-align:center !important" align-self="center" cols="12">
                                        <v-img sizes="10" class="mx-auto" style="width:160px;height:160px;border:1px solid gray;border-radius:100px!important" src="https://pbs.twimg.com/profile_images/864282616597405701/M-FEJMZ0_400x400.jpg"></v-img>
                                         <br>
-                                        <v-chip color="blue" class="white--text" small link><b>{{userInfo.username}}</b></v-chip> <br>
+                                        <v-chip color="blue" class="white--text" small link><b>@ {{user.username}}</b></v-chip> <br>
                                    </v-col>
                                    <v-col cols="12">
-                                       <h2 class="ma-4"><b>{{ userInfo.firstName }} {{ userInfo.lastname }}</b></h2>
-                                        <v-chip small outlined class="ml-4">{{userInfo.role}}</v-chip> <br>
+                                       <h2 class="ma-4"><b>{{ user.fullName }}</b></h2>
+                                        <v-chip small outlined class="ml-4">{{user.userRole[0]}}</v-chip> <br>
                                         <v-card-subtitle>
-                                                    <b>Email:</b> <br>{{userInfo.email}} <br>
+                                                    <b>Email:</b> <br>{{user.email}} <br>
                             
-                                                    <b>Phone Number:</b> <br>{{userInfo.phone}} <br>
+                                                    <b>Phone Number:</b> <br>{{user.phoneNo}} <br>
                                  
                                                     <b>Address:</b> <br> {{userInfo.address}} <br>
                                         </v-card-subtitle>
@@ -156,13 +156,12 @@ export default {
             idx:0,
             input: "",
             adddialog: false,
-            GET_LOGGED_IN_PROFILE_API: "https://buggie-backend.herokuapp.com/auth/user-info",
-            user: {},
+            AUTH_API: 'https://abs-world-xpress.herokuapp.com/auth/',
             auth: "Bearer " + localStorage.getItem("token"),
+            user: {},
             userInfo: {
-                firstName:"MD Sajib",
-                lastname:"Hang",
-                phone:"01734543027",
+                fullName: "",
+                phoneNo:"01734543027",
                 username:"sajibhang@17",
                 email:"sandra.dr@gmail.com",
                 role:"ADMIN",
@@ -224,27 +223,26 @@ export default {
         }
     },
     methods: {
-        getProfileInfo() {
-      console.log(this.auth)
-      axios({
-        method: "get",
-        url: this.GET_LOGGED_IN_PROFILE_API,
-        headers: {
-          Authorization: this.auth,
-          "Content-Type": "application/json"
-        }
-      })
-        .then(r => {
-        console.log(r.data)
-        this.userInfo = r.data;
-        localStorage.setItem("userInfo", JSON.stringify(r.data));
-        this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        console.log(this.userInfo.firstName)
-        // location.reload();
-                })
-        .catch(r => {
-            console.log(r)
-        });
+        getProfile(){
+        axios({
+                method: "get",
+                url: this.AUTH_API+`user-info?credentials=%7B%7D&details=%7B%7D&principal=%7B%7D`,
+                headers: {
+                    Authorization: this.auth
+                }
+            })
+            .then(r => {
+                this.user = r.data;
+                console.log(this.userInfo)
+                    })
+            .catch(e => {
+                console.log(e)
+                this.logOut();
+            });
+        },
+        logOut(){
+        localStorage.removeItem("token");
+        this.$router.push("/auth/signin");
         },
         getRandomColor() {
         return 'rgb(' + 
@@ -260,7 +258,7 @@ export default {
     },
     mounted(){
         // this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-        // this.getProfileInfo();
+      this.getProfile()
     },
 }
 </script>

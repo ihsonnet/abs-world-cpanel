@@ -59,6 +59,15 @@
                                        <b>Action</b>
                                    </v-col>
                                </v-row>
+                               <v-row v-if="loader" align="center" justify="center" class="text-center">
+                                   <v-col>
+                                       <v-progress-circular
+                                        :size="50"
+                                        color="primary"
+                                        indeterminate
+                                        ></v-progress-circular>
+                                   </v-col>
+                               </v-row>
                                <v-row justify="center" align="center" v-for="item in productList.productList" :key="item.productId" style="text-align:center;border-bottom: 1px solid #e7e7e7">
                                     <v-col class="mt-1" style="text-align:center" cols="1">
                                                <v-img class="mx-auto" style="border: 1px solid gray !important;" height="50" width="50" :src="item.productImage"></v-img>
@@ -220,6 +229,7 @@ export default {
         auth: "Bearer " + localStorage.getItem("token"),
         createAppDialog: false,
         deleteItemDialog: false,
+        loader: false,
         isEdit: false,
         successBar: false,
         errorBar: false,
@@ -266,6 +276,7 @@ export default {
             ')';
         },
     getProductList(){
+        this.loader = true;
         axios({
             method: "get",
             url: this.PRODUCT_API+`cpanel/?orderBy=ASC&pageNo=0&pageSize=20&sortBy=creationTime`,
@@ -274,6 +285,7 @@ export default {
             }
         })
         .then(r => {
+            this.loader = false;
             this.productList = r.data.data;
             console.log(this.productList.productList[0].productName)
                 })

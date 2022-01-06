@@ -12,7 +12,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="text-h6">
-                MD Sajib Hang
+                {{userInfo.fullName}}
               </v-list-item-title>
               <v-list-item-subtitle>ADMIN</v-list-item-subtitle>
             </v-list-item-content>
@@ -87,10 +87,14 @@
     </v-navigation-drawer>
 </template>
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
       onlineStatus: "Offline",
+      AUTH_API: 'https://abs-world-xpress.herokuapp.com/auth/',
+      auth: "Bearer " + localStorage.getItem("token"),
+      userInfo: '',
     }
   },
   methods: {
@@ -104,10 +108,27 @@ export default {
         this.onlineStatus="Offline";
         return false;
       }
+    },
+    getProfile(){
+      axios({
+            method: "get",
+            url: this.AUTH_API+`user-info?credentials=%7B%7D&details=%7B%7D&principal=%7B%7D`,
+            headers: {
+                Authorization: this.auth
+            }
+        })
+        .then(r => {
+            this.userInfo = r.data;
+            console.log(this.userInfo)
+                })
+        .catch(r => {
+            console.log(r)
+        });
     }
   },
   mounted() {
     this.setOnlineStatus()
+    this.getProfile();
   }
 }
 </script>
