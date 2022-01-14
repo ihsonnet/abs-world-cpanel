@@ -33,8 +33,28 @@
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
-                               <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Products List</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createAppDialog = true, isEdit=false" color="info">Add Product</v-btn>
+                               <v-row class="pt-5 pl-5">
+                                    <v-col cols="6">
+                                        <v-row>
+                                            <v-icon large>mdi-shopping-outline</v-icon> 
+                                            <h3 class="mt-1 ml-2">Product Controller</h3>
+                                        </v-row>
+                                    </v-col>
+                                    <v-spacer></v-spacer> 
+                                   <v-col>
+                                       <v-text-field
+                                        append-icon="mdi-magnify"
+                                        @click:append="getProductList()"
+                                        v-model="productName"
+                                        label="Search"
+                                        outlined
+                                        dense
+                                        class="mr-2"
+                                        style="width:200px !important;"
+                                    ></v-text-field> 
+                                   </v-col>
+                                    <v-col class="text-right">  <v-btn depressed @click="createAppDialog = true, isEdit=false" color="info">Add Product</v-btn>
+                                    </v-col>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="1">
@@ -104,6 +124,16 @@
                                                 <v-btn color="red" @click="deleteItemDialog=true ,selectedItem=item" depressed small><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </v-col>
+                               </v-row>
+                               <v-row>
+                                   <v-col style="text-align:center">
+                                       <v-btn :disabled="pageNo==0" @click="pageNo=pageNo-1" class="mr-2" depressed color="error">
+                                           Previous
+                                       </v-btn>
+                                       <v-btn :disabled="response.lastPage" depressed @click="pageNo=pageNo+1" color="info">
+                                           Next
+                                       </v-btn>
+                                   </v-col>
                                </v-row>
                            </v-card>
                        </v-col>
@@ -234,6 +264,9 @@ export default {
         successBar: false,
         errorBar: false,
         message: "No Messsage",
+        pageNo: 0,
+        productName: '',
+        response: '',
         productList: [],
         categoryList: [],
         createProductModel: {
@@ -279,7 +312,7 @@ export default {
         this.loader = true;
         axios({
             method: "get",
-            url: this.PRODUCT_API+`cpanel/?orderBy=ASC&pageNo=0&pageSize=20&sortBy=creationTime`,
+            url: this.PRODUCT_API+`cpanel/?orderBy=DESC&pageNo=${this.pageNo}&pageSize=20&productName=${this.productName}&sortBy=creationTime`,
             headers: {
                 Authorization: this.auth
             }
@@ -287,7 +320,8 @@ export default {
         .then(r => {
             this.loader = false;
             this.productList = r.data.data;
-            console.log(this.productList.productList[0].productName)
+            this.response = r.data.data;
+            console.log(this.response)
                 })
         .catch(r => {
             console.log(r)
@@ -452,6 +486,14 @@ export default {
   mounted(){
       this.getProductList();
       this.getCategoryList();
+  },
+  watch: {
+      pageNo : function(){
+          this.getProductList();
+      },
+      productName : function (){
+        this.getProductList();
+      }
   }
 }
 </script>
