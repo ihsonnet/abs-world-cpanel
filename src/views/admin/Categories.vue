@@ -128,7 +128,7 @@ import axios from "axios"
 export default {
   data () {
     return {
-        CATEGORY_API: "https://abs-world-xpress.herokuapp.com/api/category/",
+        CATEGORY_API: "http://194.233.93.203:8082/api/category/",
         auth: "Bearer " + localStorage.getItem("token"),
         createCatDialog: false,
         successBar: false,

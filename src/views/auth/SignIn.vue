@@ -72,7 +72,7 @@
 
 <script>
 import axios from 'axios';
-const API_URL = 'https://abs-world-xpress.herokuapp.com/'
+const API_URL = 'http://194.233.93.203:8082/'
 const LOGIN_URL = API_URL + 'auth/signin/'
 export default {
     data() {
