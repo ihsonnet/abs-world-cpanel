@@ -72,7 +72,7 @@
 
 <script>
 import axios from 'axios';
-const API_URL = 'http://194.233.93.203:8082/'
+const API_URL = 'http://194.233.68.154:8082/'
 const LOGIN_URL = API_URL + 'auth/signin/'
 export default {
     data() {
@@ -88,7 +88,7 @@ export default {
       response: "",
        rules: {
           required: value => !!value || 'Required.',
-          min: v => v.length >= 8 || 'Min 8 characters',
+          min: v => v.length >= 5 || 'Min 8 characters',
           emailMatch: () => ('The email and password you entered don\'t match'),
           // email: value => {
           //           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

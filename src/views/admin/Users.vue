@@ -97,7 +97,7 @@ import axios from 'axios'
 export default {
   data () {
     return {
-        USER_API: 'http://194.233.93.203:8082/api/customers/',
+        USER_API: 'http://194.233.68.154:8082/api/customers/',
         auth: "Bearer " + localStorage.getItem("token"),
         createAppDialog: false,
         deleteItemDialog: false,

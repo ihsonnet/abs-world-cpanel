@@ -156,7 +156,7 @@ export default {
             idx:0,
             input: "",
             adddialog: false,
-            AUTH_API: 'http://194.233.93.203:8082/auth/',
+            AUTH_API: 'http://194.233.68.154:8082/auth/',
             auth: "Bearer " + localStorage.getItem("token"),
             user: {},
             userInfo: {

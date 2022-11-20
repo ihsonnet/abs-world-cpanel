@@ -254,8 +254,8 @@ import axios from "axios"
 export default {
   data () {
     return {
-        PRODUCT_API:"http://194.233.93.203:8082/api/product/",
-        CATEGORY_API: "http://194.233.93.203:8082/api/category/",
+        PRODUCT_API:"http://194.233.68.154:8082/api/product/",
+        CATEGORY_API: "http://194.233.68.154:8082/api/category/",
         auth: "Bearer " + localStorage.getItem("token"),
         createAppDialog: false,
         deleteItemDialog: false,

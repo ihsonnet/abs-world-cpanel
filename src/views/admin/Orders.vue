@@ -97,7 +97,7 @@ import axios from "axios"
 export default {
   data () {
     return {
-        ORDER_API: "http://194.233.93.203:8082/api/order/",
+        ORDER_API: "http://194.233.68.154:8082/api/order/",
         auth: "Bearer " + localStorage.getItem("token"),
         AppDetailsDialog: false,
         orderList: [],
