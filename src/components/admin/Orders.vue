@@ -15,7 +15,22 @@
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-clipboard-text</v-icon> <h3 class="mt-1 ml-2">Order List</h3>
+                                    <v-col>
+                                        <v-row>
+                                            <v-icon large>mdi-clipboard-text</v-icon> <h3 class="mt-1 ml-2">Order List</h3>
+                                        </v-row>
+                                    </v-col>
+                                   <v-spacer></v-spacer> 
+                                       <v-text-field
+                                        append-icon="mdi-magnify"
+                                        @click:append="getOrderList()"
+                                        v-model="searchText"
+                                        label="Search"
+                                        outlined
+                                        dense
+                                        class="mr-2"
+                                        style="width:200px !important;"
+                                    ></v-text-field> 
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="4">
@@ -25,13 +40,22 @@
                                        <b>Phone Number</b>
                                    </v-col>
                                    <v-col>
-                                       <b>Address</b>
+                                       <b>Ammount</b>
                                    </v-col>
                                    <v-col>
-                                       <b>Amount</b>
+                                       <b>Status</b>
                                    </v-col>
                                    <v-col>
                                        <b>Action</b>
+                                   </v-col>
+                               </v-row>
+                                <v-row v-if="loader" align="center" justify="center" class="text-center">
+                                   <v-col>
+                                       <v-progress-circular
+                                        :size="50"
+                                        color="primary"
+                                        indeterminate
+                                        ></v-progress-circular>
                                    </v-col>
                                </v-row>
                                <v-row v-for="order in orderList" :key="order.id" style="text-align:center;border-bottom: 1px solid #e7e7e7">
@@ -60,19 +84,32 @@
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            {{order.deliveryAddress}}
+                                            BDT {{order.orderAmount}} <br>
+                                            <v-chip :color="order.paymentStatus=='paid' ? 'success': ''" x-small>{{order.paymentStatus}}</v-chip>
                                         </v-card-subtitle>
                                     </v-col>
                                     <v-col>
                                         <v-card-subtitle>
-                                            BDT {{order.orderAmount}}
+                                            {{order.orderStatus}}
                                         </v-card-subtitle>
                                     </v-col>
+                                    
                                     <v-col>
-                                        <v-card-subtitle>
-                                                <v-btn color="info" depressed small><v-icon small>mdi-pencil</v-icon></v-btn>
-                                        </v-card-subtitle>
+                                        <v-btn-toggle class="mt-3">
+                                                <v-btn color="info"  depressed small><v-icon style="color:white !important" small>mdi-eye</v-icon></v-btn>
+                                                <v-btn color="info" @click="readyForEdit(item),isEdit = true,createAppDialog=true" depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
+                                        </v-btn-toggle>
                                     </v-col>
+                               </v-row>
+                               <v-row>
+                                   <v-col style="text-align:center">
+                                       <v-btn :disabled="pageNo==0" @click="pageNo=pageNo-1" class="mr-2" depressed color="error">
+                                           Previous
+                                       </v-btn>
+                                       <v-btn :disabled="response.lastPage" depressed @click="pageNo=pageNo+1" color="info">
+                                           Next
+                                       </v-btn>
+                                   </v-col>
                                </v-row>
                            </v-card>
                        </v-col>
@@ -100,6 +137,12 @@ export default {
         ORDER_API: "http://194.233.68.154:8082/api/order/",
         auth: "Bearer " + localStorage.getItem("token"),
         AppDetailsDialog: false,
+        pageNo: 0,
+        response: '',
+        searchText: '',
+        phoneNumber:null,
+        sku: null,
+        getUrl:'',
         orderList: [],
         items: [
             {
@@ -119,10 +162,17 @@ export default {
     show () {
       return 0;
     },
+    searchChecking(text){
+        if(text.startsWith('01')) this.getUrl = this.ORDER_API+`?customerPhoneNumber=${this.searchText}&orderBy=DESC&${this.pageNo}&pageSize=20&sortBy=creationTime`;
+        if(text.startsWith("#")) this.getUrl = this.ORDER_API+`?orderBy=DESC&orderSKU=${this.searchText.slice(1)}&${this.pageNo}&pageSize=20&sortBy=creationTime`
+    },
     getOrderList(){
+        if(this.searchText) this.searchChecking(this.searchText)
+        else this.getUrl = this.getUrl = this.ORDER_API+`?orderBy=DESC&${this.pageNo}&pageSize=20&sortBy=creationTime`
+        
         axios({
             method: "get",
-            url: this.ORDER_API+'?orderBy=DESC&pageNo=0&pageSize=20&sortBy=creationTime',
+            url: this.getUrl,
             headers: {
             Authorization: this.auth,
             "Content-Type": "application/json"
@@ -130,6 +180,7 @@ export default {
         })
         .then(r => {
             this.orderList = r.data.data.orderList;
+            this.response = r.data.data;
             console.log(this.orderList);
         })
         .catch(r => {
@@ -146,6 +197,14 @@ export default {
   },
    mounted(){
       this.getOrderList();
+  },
+  watch: {
+      pageNo : function(){
+          this.getOrderList();
+      },
+      searchText : function (){
+        this.getOrderList();
+      }
   }
 }
 </script>

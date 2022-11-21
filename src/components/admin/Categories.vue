@@ -32,7 +32,7 @@
                    <v-row>
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
-                               <v-row class="pa-5">
+                               <v-row class="pa-5 mb-5">
                                    <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Categories </h3>   <v-spacer></v-spacer> <v-btn depressed @click="createCatDialog = true, createCatModel={}, catImageLink=''" color="info">Create Category</v-btn>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
