@@ -103,7 +103,7 @@ export default {
         orderList: [],
         items: [
             {
-            text: 'a2sDMS',
+            text: 'Home',
             disabled: false,
             href: '/',
             },

@@ -37,7 +37,7 @@
                                     <v-col cols="6">
                                         <v-row>
                                             <v-icon large>mdi-shopping-outline</v-icon> 
-                                            <h3 class="mt-1 ml-2">Product Controller</h3>
+                                            <h3 class="mt-1 ml-2">Products  <v-chip color="info" small>{{productList.totalProduct}}</v-chip></h3>
                                         </v-row>
                                     </v-col>
                                     <v-spacer></v-spacer> 
@@ -233,7 +233,7 @@
 
     <v-dialog title="Add New Drug" v-model="deleteItemDialog" max-width="350px">
         <v-card class="pa-5 text-center">
-            <h3>Are you want delete this Product?</h3> <br>
+            <h3>Sure! want to delete this Product?</h3> <br>
             <v-row justify="center" align="center">
                 <v-col>
                     <v-btn @click="deleteItemDialog=false" depressed color="info"><v-icon class="mr-2">mdi-cancel</v-icon> No</v-btn>
@@ -285,14 +285,14 @@ export default {
         selectedItem: null,
         items: [
             {
-            text: 'a2sDMS',
+            text: 'Home',
             disabled: false,
             href: '/',
             },
             {
-            text: 'Create Appointment',
+            text: 'Products Controller',
             disabled: true,
-            href: 'create-appointment',
+            href: 'products',
             },
         ]
     }

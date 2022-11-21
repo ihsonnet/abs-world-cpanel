@@ -33,7 +33,7 @@
                        <v-col>
                            <v-card class="pa-4 mt-2" elevation="0" style="border: 1px solid #e7e7e7" width="100%">
                                <v-row class="pa-5">
-                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Categories</h3>   <v-spacer></v-spacer> <v-btn depressed @click="createCatDialog = true" color="info">Create Category</v-btn>
+                                   <v-icon large>mdi-timetable</v-icon> <h3 class="mt-1 ml-2">Categories </h3>   <v-spacer></v-spacer> <v-btn depressed @click="createCatDialog = true, createCatModel={}, catImageLink=''" color="info">Create Category</v-btn>
                                </v-row>
                                <v-row style="background-color:#f2f5f8;border-radius:8px;text-align:center">
                                    <v-col cols="2">
@@ -65,8 +65,8 @@
                                     </v-col>
                                     <v-col>
                                         <v-btn-toggle class="mt-3">
-                                                <v-btn color="info"  depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
-                                                <v-btn color="red" depressed small><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
+                                                <v-btn color="info"  depressed small @click="editCatDialog=true, readyForEdit(cat)"><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
+                                                <v-btn color="red" depressed small @click="deleteItemDialog=true ,selectedItem=cat"><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </v-col>
                                </v-row>
@@ -118,6 +118,64 @@
             </v-form>
         </v-card>
     </v-dialog>
+
+    <v-dialog title="Edit Category" v-model="editCatDialog" max-width="500px">
+        <v-card class="pa-5">
+            <h3>Edit Category</h3>
+            <br>
+            <v-form>
+                <v-row>
+                    <v-col>
+                        <v-text-field
+                            v-model="createCatModel.catName"
+                            label="Category Name"
+                            required
+                            outlined
+                            dense
+                        ></v-text-field>
+
+                        <v-row>
+                            <v-col cols="8">
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    label="File input"
+                                    @change="selectImage"
+                                >
+                            </v-col>
+                            <v-col>
+                                <v-img
+                                height="80"
+                                width="80"
+                                style="border:1px solid gray"
+                                :src="catImageLink"
+                                >
+
+                                </v-img>
+                            </v-col>
+                        </v-row>
+                        <br>
+                        <v-btn depressed @click="editCategory" color="info"><v-icon class="mr-2">mdi-content-save</v-icon> Save</v-btn>
+                </v-col>
+                </v-row>
+            </v-form>
+        </v-card>
+    </v-dialog>
+
+
+    <v-dialog title="Add New Drug" v-model="deleteItemDialog" max-width="350px">
+        <v-card class="pa-5 text-center">
+            <h3>Sure! want to delete this Category?</h3> <br>
+            <v-row justify="center" align="center">
+                <v-col>
+                    <v-btn @click="deleteItemDialog=false" depressed color="info"><v-icon class="mr-2">mdi-cancel</v-icon> No</v-btn>
+                </v-col>
+                <v-col>
+                    <v-btn @click="deleteCategory(selectedItem)" depressed color="error"><v-icon class="mr-2">mdi-check</v-icon> Yes</v-btn>
+                </v-col>
+            </v-row>
+        </v-card>
+    </v-dialog>
             
     </v-container>
 </div>  
@@ -131,6 +189,8 @@ export default {
         CATEGORY_API: "http://194.233.68.154:8082/api/category/",
         auth: "Bearer " + localStorage.getItem("token"),
         createCatDialog: false,
+        editCatDialog: false,
+        deleteItemDialog: false,
         successBar: false,
         errorBar: false,
         message: "No Messsage",
@@ -140,9 +200,10 @@ export default {
         },
         catImagefile: null,
         catImageLink: "",
+        selectedItem: null,
         items: [
             {
-            text: 'a2sDMS',
+            text: 'Home',
             disabled: false,
             href: '/',
             },
@@ -228,6 +289,75 @@ export default {
             this.getCategoryList();
         });
     },
+    readyForEdit(item){
+        this.catImage = null;
+        this.createCatModel.catName = item.catName;
+        this.catImageLink = item.catImage;
+        console.log(this.createCatModel)
+        this.selectedItem = item;
+    },
+    editCategory(){
+        console.log("Edit call")
+        console.log(this.createCatModel);
+        axios({
+            method:"PUT",
+            url: this.CATEGORY_API+this.selectedItem.catId,
+            data: this.createCatModel,
+            headers: {
+                Authorization: this.auth,
+                "Content-Type": "application/json"
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==200){
+                if(this.catImagefile){
+                    this.uploadCatImage(this.selectedItem.catId);
+                }
+                this.message = "Product Edited!"
+                this.successBar = true;
+                this.editCatDialog = false;
+                this.getCategoryList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        })
+        .catch(e=>{
+            this.message = e;
+            this.errorBar = true;
+        });
+    },
+     deleteCategory(item){
+        this.successBar = false;
+        this.errorBar = false;
+        console.log("called delete")
+        console.log(item)
+        axios({
+            method:"delete",
+            url: this.CATEGORY_API+item.catId,
+            headers: {
+                Authorization: this.auth
+            }
+        })
+        .then(r=>{
+            if(r.data.statusCode==200){
+                this.message = "Category Deleted!"
+                this.successBar = true;
+                this.deleteItemDialog = false
+                this.getCategoryList();
+            }
+            else {
+                this.message = "Something wrong!"
+                this.errorBar = true;
+            }
+        })
+        .catch(e=>{
+            this.message = e;
+            this.deleteItemDialog = false
+            this.errorBar = true;
+        });
+    }
   },
   mounted(){
       this.getCategoryList();
