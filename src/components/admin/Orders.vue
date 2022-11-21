@@ -97,7 +97,7 @@
                                     <v-col>
                                         <v-btn-toggle class="mt-3">
                                                 <v-btn color="info"  depressed small><v-icon style="color:white !important" small>mdi-eye</v-icon></v-btn>
-                                                <v-btn color="info" @click="readyForEdit(item),isEdit = true,createAppDialog=true" depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
+                                                <v-btn color="info" depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </v-col>
                                </v-row>
@@ -139,6 +139,7 @@ export default {
         AppDetailsDialog: false,
         pageNo: 0,
         response: '',
+        loader: false,
         searchText: '',
         phoneNumber:null,
         sku: null,
@@ -167,6 +168,7 @@ export default {
         if(text.startsWith("#")) this.getUrl = this.ORDER_API+`?orderBy=DESC&orderSKU=${this.searchText.slice(1)}&${this.pageNo}&pageSize=20&sortBy=creationTime`
     },
     getOrderList(){
+        this.loader = true;
         if(this.searchText) this.searchChecking(this.searchText)
         else this.getUrl = this.getUrl = this.ORDER_API+`?orderBy=DESC&${this.pageNo}&pageSize=20&sortBy=creationTime`
         
@@ -179,6 +181,7 @@ export default {
             }
         })
         .then(r => {
+            this.loader = false;
             this.orderList = r.data.data.orderList;
             this.response = r.data.data;
             console.log(this.orderList);

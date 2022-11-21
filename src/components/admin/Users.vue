@@ -47,7 +47,7 @@
                                                  <h4>
                                                     {{user.fullName}}
                                                 </h4> 
-                                                <v-chip class="px-0" x-small color="info">@{{user.username}}</v-chip>  
+                                                <v-chip x-small><b>@{{user.username}}</b></v-chip>  
                                             </v-col>
                                         </v-row>
                                     </v-col>
@@ -70,7 +70,7 @@
                                         <v-btn-toggle>
                                                 <v-btn color="info" @click="readyForEdit(item),isEdit = true,createAppDialog=true" depressed small><v-icon style="color:white !important" small>mdi-pencil</v-icon></v-btn>
                                                 <v-btn color="success"  depressed small><v-icon style="color:white !important" small>mdi-eye</v-icon></v-btn>
-                                                <v-btn color="red" @click="deleteItemDialog=true ,selectedItem=item" depressed small><v-icon style="color:white !important" small>mdi-delete</v-icon></v-btn>
+                                                <v-btn color="red" @click="deleteItemDialog=true ,selectedItem=item" depressed small><v-icon style="color:white !important" small>mdi-block-helper</v-icon></v-btn>
                                         </v-btn-toggle>
                                     </v-col>
                                </v-row>
