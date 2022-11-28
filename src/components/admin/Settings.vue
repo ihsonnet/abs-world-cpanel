@@ -73,6 +73,7 @@
                                             outlined
                                             dense
                                             prepend-icon="mdi-facebook"
+                                            class="mt-3"
                                         ></v-text-field>
                                         <v-text-field
                                             v-model="settingsModel.youtubeChannel"
